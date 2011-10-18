@@ -79,7 +79,11 @@ class CoffinEnvironment(Environment):
             except ImportError:
                 pass
             else:
-                for f in os.listdir(path):
+                try:
+                    files = os.listdir(path)
+                except OSError:
+                    continue
+                for f in files:
                     if f == '__init__.py' or f.startswith('.'):
                         continue
 
