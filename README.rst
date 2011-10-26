@@ -96,9 +96,9 @@ If you use the built-in admin app, you have then to add the following setting::
        'admin',
    )
 
-Please note coffin uses the folder root folder of the template to decide to
-which application it belongs (the django.contrib.admin application stores all
-its templates in the 'admin' subdirectory).
+Please note coffin uses the root folder of the template path to decide to
+which application the template belongs to (the django.contrib.admin application
+stores all its templates in the 'admin' subdirectory).
 
 
 404 and 500 handlers
