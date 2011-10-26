@@ -2,6 +2,7 @@ from django.template import (
     Context as DjangoContext,
     add_to_builtins as django_add_to_builtins,
     import_library,
+    Origin,
 )
 from jinja2 import Template as _Jinja2Template
 
