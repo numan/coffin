@@ -73,7 +73,7 @@ def _make_jinja_app_loader():
     from django.template.loaders.app_directories import app_template_dirs
     loader = loaders.FileSystemLoader([])
     loader.searchpath = GetTemplateDirs(lambda: app_template_dirs)
-
+    return loader
 
 
 def _make_jinja_filesystem_loader():
@@ -91,3 +91,4 @@ _JINJA_LOADER_BY_DJANGO_SUBSTR = { # {substr: callable, ...}
     'app_directories': _make_jinja_app_loader,
     'filesystem': _make_jinja_filesystem_loader,
 }
+
