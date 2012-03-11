@@ -87,18 +87,27 @@ Using the django rendering engine
 
 If your project uses some applications which needs to original django
 templating engine to correctly render their templates, you can add their names
-to a JINJA2_DISABLED_APPS settings and coffin will render the templates using
+to a JINJA2_DISABLED_TEMPLATES setting and coffin will render the templates using
 the django templating engine.
 
 If you use the built-in admin app, you have then to add the following setting::
 
-   JINJA2_DISABLED_APPS = (
-       'admin',
-   )
+  JINJA2_DISABLED_TEMPLATES = (
+    'admin',
+  )
 
-Please note coffin uses the root folder of the template path to decide to
-which application the template belongs to (the django.contrib.admin application
-stores all its templates in the 'admin' subdirectory).
+Each entry in the JINJA2_DISABLED_TEMPLATES iterable is treated as a regex
+pattern and every template is tested against them to check if it has to be
+rendered using Jinja+Coffin or with the built-in templating engine.
+
+You can define the settings as shown in the following example::
+
+  JINJA2_DISABLED_TEMPLATES = (
+    r'[^/]+\.html',                           # All generic templates
+    r'myapp/(registration|photos|calendar)/', # The three apps in the myapp package
+    r'auth/',                                 # All auth templates
+    r'(cms|menu|admin|admin_doc)/',           # The templates of these 4 apps
+  )
 
 
 404 and 500 handlers
