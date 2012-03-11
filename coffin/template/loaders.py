@@ -37,6 +37,9 @@ class Loader(BaseLoader):
                 return True
 
     def load_template(self, template_name, template_dirs=None):
+        if template_dirs is not None:
+            raise NotImplementedError('template dirs is ignored now')
+
         if self.is_enabled(template_name):
             try:
                 template = get_template(template_name)
@@ -45,7 +48,6 @@ class Loader(BaseLoader):
             return template, template.filename
         else:
             return get_django_template(template_name, template_dirs)
-
 
 def get_django_template(name, dirs=None):
     global django_template_source_loaders
@@ -78,13 +80,22 @@ def jinja_loader_from_django_loader(django_loader):
             return func()
     return None
 
+class GetTemplateDirs(object):
+    def __init__(self, dirs_lambda):
+        self.dirs_lambda = dirs_lambda
+    def __iter__(self):
+        for element in self.dirs_lambda():
+            yield element
+
 
 def _make_jinja_app_loader():
     """Makes an 'app loader' for Jinja which acts like
     :mod:`django.template.loaders.app_directories`.
     """
     from django.template.loaders.app_directories import app_template_dirs
-    return loaders.FileSystemLoader(app_template_dirs)
+    loader = loaders.FileSystemLoader([])
+    loader.searchpath = GetTemplateDirs(lambda: app_template_dirs)
+    return loader
 
 
 def _make_jinja_filesystem_loader():
@@ -92,7 +103,9 @@ def _make_jinja_filesystem_loader():
     :mod:`django.template.loaders.filesystem`.
     """
     from django.conf import settings
-    return loaders.FileSystemLoader(settings.TEMPLATE_DIRS)
+    loader = loaders.FileSystemLoader([])
+    loader.searchpath = GetTemplateDirs(lambda: settings.TEMPLATE_DIRS)
+    return loader
 
 
 # Determine loaders from Django's conf.
