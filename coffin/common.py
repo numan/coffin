@@ -175,7 +175,7 @@ def get_env():
     :return: A Jinja2 environment singleton.
     """
     from django.conf import settings
-    
+
     kwargs = {
         'autoescape': True,
     }

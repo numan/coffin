@@ -1,10 +1,10 @@
-"""Replacement for ``django.template.loader`` that uses Jinja 2.
+"""
+Replacement for ``django.template.loader`` that uses Jinja 2.
 
 The module provides a generic way to load templates from an arbitrary
 backend storage (e.g. filesystem, database).
 """
 
-from coffin.template import Template as CoffinTemplate
 from jinja2 import TemplateNotFound
 
 
