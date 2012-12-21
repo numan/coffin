@@ -48,6 +48,7 @@ class CoffinEnvironment(Environment):
         loaders = []
 
         from coffin.template.loaders import jinja_loader_from_django_loader
+        from jinja2.loaders import BaseLoader as JinjaLoader
 
         from django.conf import settings
         _loaders = getattr(settings, 'JINJA2_TEMPLATE_LOADERS', settings.TEMPLATE_LOADERS)
@@ -171,7 +172,7 @@ class CoffinEnvironment(Environment):
         tests.update(from_setting('JINJA2_TESTS', True))
         filters.update(from_setting('JINJA2_FILTERS', True))
         globals.update(from_setting('JINJA2_GLOBALS'))
-        
+
 
         # Finally, add extensions defined in application's templatetag libraries
         libraries = self._get_templatelibs()
